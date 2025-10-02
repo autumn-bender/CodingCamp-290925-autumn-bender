@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>To-Do List</h1>
+            <p id="currentDate">Today is Thursday, October 2, 2025</p>
+        </header>
+
+        <section class="add-task">
+            <form id="taskForm">
+                <input type="text" id="taskInput" placeholder="Enter a new task..." required>
+                <input type="date" id="dateInput" required>
+                <input type="time" id="timeInput" required>
+                <select id="prioritySelect" required>
+                    <option value="">Select Priority</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Less Important</option>
+                </select>
+                <button type="submit" id="submitBtn">Add Task</button>
+            </form>
+        </section>
+
+        <section class="search-filter">
+            <input type="text" id="searchInput" placeholder="Search tasks...">
+            <select id="priorityFilter">
+                <option value="">All Priorities</option>
+                <option value="urgent">Urgent</option>
+                <option value="normal">Normal</option>
+                <option value="low">Less Important</option>
+            </select>
+            <button id="showAllBtn">Show All Tasks</button>
+        </section>
+
+        <section class="task-list">
+            <ul id="taskList"></ul>
+            <p id="noTasksMsg" class="no-tasks">No tasks yet. Add one above!</p>
+        </section>
+
+        <footer>
+            <p>Shortcuts: Ctrl + N (Add), Ctrl + F (Search), Ctrl + A (Show All), Escape (Cancel)</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
