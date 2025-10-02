@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background-color: #000c75;
     color: #333;
     line-height: 1.6;
 }
@@ -16,7 +16,7 @@ body {
     max-width: 700px;
     margin: 0 auto;
     padding: 20px;
-    background: white;
+    background: rgb(202, 203, 250);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     margin-top: 20px;
@@ -30,11 +30,16 @@ header {
 
 header h1 {
     color: #2c3e50;
+    margin-bottom: 0.5px;
+}
+
+header h2 {
+    color: #2c3e50;
     margin-bottom: 5px;
 }
 
 header p {
-    color: #7f8c8d;
+    color: #5b6464;
     font-size: 0.9em;
 }
 
