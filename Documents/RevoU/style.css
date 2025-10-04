@@ -12,14 +12,13 @@ body {
     line-height: 1.6;
 }
 
-.container {
+.utama {
     max-width: 700px;
-    margin: 0 auto;
+    margin: 20px auto 0 auto; /* margin-top 20px, auto kiri dan kanan */
     padding: 20px;
     background: rgb(202, 203, 250);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    margin-top: 20px;
 }
 
 /* Header */
@@ -54,7 +53,10 @@ header p {
     flex-wrap: wrap;
 }
 
-#taskInput, #dateInput, #timeInput, #prioritySelect {
+#taskInput,
+#dateInput,
+#timeInput,
+#prioritySelect {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -76,6 +78,7 @@ header p {
     cursor: pointer;
     font-size: 1em;
     white-space: nowrap;
+    transition: background-color 0.3s ease;
 }
 
 #taskForm button:hover {
@@ -90,7 +93,8 @@ header p {
     flex-wrap: wrap;
 }
 
-#searchInput, #priorityFilter {
+#searchInput,
+#priorityFilter {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -112,6 +116,7 @@ header p {
     border-radius: 4px;
     cursor: pointer;
     white-space: nowrap;
+    transition: background-color 0.3s ease;
 }
 
 #showAllBtn:hover {
@@ -136,6 +141,7 @@ header p {
     background-color: #ecf0f1;
     border-radius: 4px;
     border-left: 4px solid #3498db;
+    transition: opacity 0.3s ease;
 }
 
 .task-item.completed {
@@ -187,12 +193,14 @@ header p {
     gap: 5px;
 }
 
-.edit-btn, .delete-btn {
+.edit-btn,
+.delete-btn {
     padding: 8px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9em;
+    transition: background-color 0.3s ease;
 }
 
 .edit-btn {
@@ -230,16 +238,22 @@ footer {
 
 /* Responsive */
 @media (max-width: 700px) {
-    .container {
+    .utama {
         margin: 10px;
         padding: 15px;
     }
 
-    #taskForm, .search-filter {
+    #taskForm,
+    .search-filter {
         flex-direction: column;
     }
 
-    #taskInput, #dateInput, #timeInput, #prioritySelect, #searchInput, #priorityFilter {
+    #taskInput,
+    #dateInput,
+    #timeInput,
+    #prioritySelect,
+    #searchInput,
+    #priorityFilter {
         min-width: auto;
     }
 

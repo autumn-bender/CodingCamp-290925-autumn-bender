@@ -20,14 +20,13 @@ const currentDateEl = document.getElementById('currentDate');
 // Utility function to format datetime for display
 function formatDateTime(due) {
     const date = new Date(due);
-    return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `${date.toLocaleDateString('en-US', options)} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 }
 
 // Load tasks from localStorage on init
 document.addEventListener('DOMContentLoaded', () => {
-    // Set dynamic current date
     currentDateEl.textContent = `Today is ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-    
     loadTasks();
     applyFilters();
     setupEventListeners();
@@ -35,28 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Event listeners
 function setupEventListeners() {
-    // Form submission
     taskForm.addEventListener('submit', handleSubmit);
-
-    // Search input
     searchInput.addEventListener('input', applyFilters);
-
-    // Priority filter change
     priorityFilter.addEventListener('change', applyFilters);
 
-    // Show all button
     showAllBtn.addEventListener('click', () => {
+        // Reset search and filter values
         searchInput.value = '';
         priorityFilter.value = '';
         applyFilters();
     });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey) {
-            switch (e.key) {
+            switch (e.key.toLowerCase()) {
                 case 'n':
-                case 'N':
                     e.preventDefault();
                     editingId = null;
                     submitBtn.textContent = 'Add Task';
@@ -64,27 +56,22 @@ function setupEventListeners() {
                     taskInput.focus();
                     break;
                 case 'f':
-                case 'F':
                     e.preventDefault();
                     searchInput.focus();
                     break;
                 case 'a':
-                case 'A':
                     e.preventDefault();
                     showAllBtn.click();
                     break;
             }
         }
         if (e.key === 'Escape') {
-            taskInput.value = '';
-            dateInput.value = '';
-            timeInput.value = '';
-            prioritySelect.value = '';
+            taskForm.reset();
             searchInput.value = '';
             priorityFilter.value = '';
             editingId = null;
             submitBtn.textContent = 'Add Task';
-            clearValidation();
+            clearValidation([taskInput, dateInput, timeInput, prioritySelect]);
             taskInput.focus();
         }
     });
@@ -99,7 +86,6 @@ function handleSubmit(e) {
     const dueTime = timeInput.value;
     const priority = prioritySelect.value;
 
-    // Validation
     const inputs = [taskInput, dateInput, timeInput, prioritySelect];
     let valid = true;
     inputs.forEach(input => {
@@ -120,7 +106,6 @@ function handleSubmit(e) {
     const dueISO = new Date(fullDateTime).toISOString();
 
     if (editingId) {
-        // Update existing task
         const task = tasks.find(t => t.id === editingId);
         if (task) {
             task.text = taskText;
@@ -130,9 +115,8 @@ function handleSubmit(e) {
         editingId = null;
         submitBtn.textContent = 'Add Task';
     } else {
-        // Add new task
         const newTask = {
-            id: Date.now(),
+            id: Date.now().toString(),
             text: taskText,
             due: dueISO,
             priority: priority,
@@ -141,7 +125,6 @@ function handleSubmit(e) {
         tasks.unshift(newTask);
     }
 
-    // Reset form and feedback
     taskForm.reset();
     taskInput.classList.add('success');
     setTimeout(() => {
@@ -171,9 +154,10 @@ function applyFilters() {
 function editTask(id) {
     const task = tasks.find(t => t.id === id);
     if (task) {
+        const dueDateObj = new Date(task.due);
         taskInput.value = task.text;
-        dateInput.value = new Date(task.due).toISOString().split('T')[0];
-        timeInput.value = new Date(task.due).toISOString().split('T')[1].slice(0, 5);
+        dateInput.value = dueDateObj.toISOString().split('T')[0];
+        timeInput.value = dueDateObj.toTimeString().slice(0, 5);
         prioritySelect.value = task.priority;
         editingId = id;
         submitBtn.textContent = 'Update Task';
@@ -205,8 +189,8 @@ function updateDisplay() {
                 <div class="task-date">Due: ${formatDateTime(task.due)}</div>
             </div>
             <div class="task-buttons">
-                <button class="edit-btn" onclick="editTask(${task.id})">Edit</button>
-                <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+                <button class="edit-btn" onclick="editTask('${task.id}')">Edit</button>
+                <button class="delete-btn" onclick="deleteTask('${task.id}')">Delete</button>
             </div>
         `;
         taskList.appendChild(li);
@@ -215,7 +199,7 @@ function updateDisplay() {
 
 // Clear validation classes
 function clearValidation(inputs = []) {
-    [taskInput, dateInput, timeInput, prioritySelect, ...inputs].forEach(input => {
+    inputs.forEach(input => {
         input.classList.remove('error', 'success');
     });
 }
@@ -231,7 +215,6 @@ function loadTasks() {
     if (saved) {
         tasks = JSON.parse(saved).map(task => ({
             ...task,
-            // Ensure due is ISO if missing (backward compat)
             due: task.due || new Date().toISOString()
         }));
         filteredTasks = [...tasks];
